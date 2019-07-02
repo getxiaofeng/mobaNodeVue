@@ -13,7 +13,8 @@
                     <el-form-item label="头像">
                     <el-upload
                         class="avatar-uploader"
-                        :action="$http.defaults.baseURL+'/upload'"    
+                        :action="$http.defaults.baseURL+'/upload'"
+                        :headers="getAuthHeaders()"  
                         :show-file-list="false"
                         :on-success="afterUpload">
                         <img v-if="model.avatar" :src="model.avatar" class="avatar">
@@ -23,8 +24,10 @@
                     <el-form-item label="类型">
                         <el-select v-model="model.categories" multiple>
                             <el-option 
-                            v-for="item of categories"  :key="item._id"
-                            :label="item.name" :value="item._id"
+                            v-for="item of categories"  
+                            :key="item._id"
+                            :label="item.name" 
+                            :value="item._id"
                             ></el-option>
                         </el-select>
                     </el-form-item>
@@ -68,7 +71,11 @@
                     
                </el-tab-pane>
                <el-tab-pane label="技能" name="skills">
-                   <el-button  type="text" @click="model.skills.push({})"><i class="el-icon-plus"></i>添加技能</el-button>
+                   <el-button  type="text" 
+                   @click="model.skills.push({})">
+                       <i class="el-icon-plus"></i>
+                       添加技能
+                    </el-button>
                    <el-row type="flex" style="flex-wrap: wrap"> 
                        <el-col :md="12" v-for="(item,i) in model.skills" :key="i">  <!--技能有多个，使用索引作为key-->
                            <el-form-item label="名称">
@@ -77,7 +84,8 @@
                            <el-form-item label="图标">
                                <el-upload
                                     class="avatar-uploader"
-                                    :action="$http.defaults.baseURL+'/upload'"    
+                                    :action="$http.defaults.baseURL+'/upload'"  
+                                    :headers="getAuthHeaders()"  
                                     :show-file-list="false"
                                     :on-success="res=>$set(item,'icon', res.url)">
                                     <img v-if="item.icon" :src="item.icon" class="avatar">

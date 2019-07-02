@@ -1,43 +1,39 @@
 <template>
-    <m-card icon="menu" title="新闻资讯">
-            <div class="card-body pt-3">
+    <m-card :icon="menu" :title="新闻资讯">
                 <div class="nav jc-between">
-                    <div class="nav-item active">
-                        <div class="nav-link">热门</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-link">新闻</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-link">新闻</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-link">新闻</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-link">新闻</div>
+                    <div 
+                    class="nav-item" 
+                    :class="{active: active === i}"
+                    v-for="(category,i) in categories"
+                    :key="i"
+                    @click="active = i">
+                        <div class="nav-link">{{category.name}}</div>
                     </div>
                 </div>
                 <div class="pt-3">
                     <swiper>
-                        <swiper-slide v-for="s in 5" :key="s">
-                            <div class="py-2" v-for="n in 5" :key="n">
-                                <span>[新闻]</span>
-                                <span>|</span>
-                                <span>【已开服】6月26日正式服“稷下星之队”版本更新公告</span>
-                                <span>6/30</span>
-                            </div>
+                        <swiper-slide v-for="(category,i) in categories" :key="i">
+                            <slot name="items" :category="category"></slot>
                         </swiper-slide>
                     </swiper>
                 </div>
-            </div>
+        
         </m-card>
 </template>
 
 <script>
 export default {
-
-}
+    props: {
+        icon: {type: String, required: true},
+        title: {type: String, required: true},
+        categories: {type: Array,required: true},
+    },
+    data(){
+        return{
+            active: 0
+        }
+    }
+};
 </script>
 
 <style>

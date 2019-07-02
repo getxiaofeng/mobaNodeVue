@@ -20,10 +20,10 @@ http.interceptors.request.use(function (config) {
 
 http.interceptors.response.use( res =>{
     return res
-}, err=> {
+}, err => {
     if(err.response.data.message){
     Vue.prototype.$message({
-        type:'eror',
+        type:'error',
         message:err.response.data.message
     })
     if(err.response.status === 401){

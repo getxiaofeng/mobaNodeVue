@@ -12,6 +12,7 @@ app.use('/uploads',express.static(__dirname+'/uploads'))
 
 require('./router/admin')(app)      //这里接收admin下index.js中的app并使用
 require('./plugins/db')(app) 
+require('./router/web')(app)
 
 
 app.listen(3000,()=>{

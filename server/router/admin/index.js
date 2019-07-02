@@ -33,7 +33,7 @@ module.exports = app=>{        //导出为一个函数
         if(req.Model.modelName === 'Category'){
             queryOptions.populate = 'parent '
         }
-        const items = await req.Model.find().setOptions(queryOptions).limit(10)    //关联字段populate('parent')
+        const items = await req.Model.find().setOptions(queryOptions).limit(100)    //关联字段populate('parent')
         res.send(items)
     })
 
@@ -44,19 +44,17 @@ module.exports = app=>{        //导出为一个函数
     })
     // 登录校验中间件
     const authMiddleware = require('../../middleware/auth')
-
-    // 资源中间件
     const resourceMiddleware = require('../../middleware/resource')
-    app.use('/admin/api/rest/:resource',authMiddleware(),resourceMiddleware(),router)
-
+    app.use('/admin/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
+  
     const multer = require('multer')
-    const upload = multer({dest:__dirname +'/../../uploads'})
-    app.post('/admin/api/upload',authMiddleware(),upload.single('file'),async(req,res)=>{
-        const file = req.file
-        file.url = `http://localhost:3000/uploads/${file.filename}`
-        res.send(file)
+    const upload = multer({ dest: __dirname + '/../../uploads' })
+    app.post('/admin/api/upload', authMiddleware(), upload.single('file'), async (req, res) => {
+      const file = req.file
+      file.url = `http://localhost:3000/uploads/${file.filename}`
+      res.send(file)
     })
-
+    
     app.post('/admin/api/login',async (req,res)=>{
         const { username, password } = req.body
         //根据用户名找用户

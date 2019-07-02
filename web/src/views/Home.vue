@@ -27,42 +27,19 @@
         </div>
         <!-- end nav-icons -->
 
-        <m-card icon="menu" title="新闻资讯">
-            <div class="card-body pt-3">
-                <div class="nav jc-between">
-                    <div class="nav-item active">
-                        <div class="nav-link">热门</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-link">新闻</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-link">新闻</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-link">新闻</div>
-                    </div>
-                    <div class="nav-item">
-                        <div class="nav-link">新闻</div>
-                    </div>
+        <m-list-card icon="menu" title="新闻资讯" :categories="newsCats">
+            <template #items="{category}">
+                <div class="py-2" v-for="(news,i) in category.newsList" :key="i">
+                    <span>[{{news.categoryName}}]</span>
+                    <span>|</span>
+                    <span>{{news.title}}</span>
+                    <span>{{news.date}}</span>
                 </div>
-                <div class="pt-3">
-                    <swiper>
-                        <swiper-slide v-for="s in 5" :key="s">
-                            <div class="py-2" v-for="n in 5" :key="n">
-                                <span>[新闻]</span>
-                                <span>|</span>
-                                <span>【已开服】6月26日正式服“稷下星之队”版本更新公告</span>
-                                <span>6/30</span>
-                            </div>
-                        </swiper-slide>
-                    </swiper>
-                </div>
-            </div>
-        </m-card>
+            </template>
+        </m-list-card>
         <m-card icon="menu" title="英雄列表"></m-card>
-        <m-card icon="menu" title="精彩视频"></m-card>
-        <m-card icon="menu" title="图文攻略"></m-card>
+        <m-card icon="menu" title="英雄列表"></m-card>
+        <m-card icon="menu" title="英雄列表"></m-card>
         <m-card icon="menu" title="英雄列表"></m-card>
     </div>
 </template> 
@@ -101,8 +78,50 @@ export default {
                     el: ".pagination-home"
                 }
             },
-            swiperSlides: [1, 2, 3, 4, 5]
+            newsCats: [
+                {
+                    name: "热门",
+                    newsList: new Array(5).fill(1).map(v => ({
+                        categoryName: "公告",
+                        title: "7月1日抢先服不停机更新公告",
+                        date: "07/01"
+                    }))
+                },
+                {
+                    name: "新闻",
+                    newsList: new Array(5).fill({}).map(v => ({
+                        categoryName: "新闻",
+                        title: "7月1日抢先服不停机更新公告",
+                        date: "07/01"
+                    }))
+                },
+                {
+                    name: "热门",
+                    newsList: new Array(5).fill({}).map(v => ({
+                        categoryName: "公告",
+                        title: "7月1日抢先服不停机更新公告",
+                        date: "07/01"
+                    }))
+                },
+                {
+                    name: "热门",
+                    newsList: new Array(5).fill({}).map(v => ({
+                        categoryName: "公告",
+                        title: "7月1日抢先服不停机更新公告",
+                        date: "07/01"
+                    }))
+                },
+                {
+                    name: "热门",
+                    newsList: new Array(5).fill({}).map(v => ({
+                        categoryName: "公告",
+                        title: "7月1日抢先服不停机更新公告",
+                        date: "07/01"
+                    }))
+                }
+            ]
         };
     }
 };
 </script>
+ 
