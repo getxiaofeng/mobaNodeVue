@@ -2,9 +2,9 @@
     <div>
         <h1>{{id?'编辑':'新建'}}英雄</h1>
         <el-form @submit.native.prevent="save" label-width="100px">
-           <el-tabs value="skills" type="border-card">
-               <el-tab-pane label="基础信息">
-                    <el-form-item label="名称">
+           <el-tabs  type="border-card" value="basic" >
+               <el-tab-pane label="基础信息" name="basic">
+                    <el-form-item label="名称" >
                         <el-input v-model="model.name"></el-input>
                     </el-form-item>
                     <el-form-item label="称号">
@@ -13,11 +13,23 @@
                     <el-form-item label="头像">
                     <el-upload
                         class="avatar-uploader"
-                        :action="$http.defaults.baseURL+'/upload'"
+                        :action="uploadUrl"
                         :headers="getAuthHeaders()"  
                         :show-file-list="false"
-                        :on-success="afterUpload">
+                        :on-success="res => $set(model,'avatar',res.url)">
                         <img v-if="model.avatar" :src="model.avatar" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item label="Banner">
+                    <el-upload
+                        class="avatar-uploader"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"  
+                        :show-file-list="false"
+                        :on-success="res => $set(model,'banner',res.url)"
+                        >
+                        <img v-if="model.banner" :src="model.banner" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
@@ -81,10 +93,56 @@
                            <el-form-item label="名称">
                                <el-input v-model="item.name"></el-input>
                            </el-form-item>
+                           <el-form-item label="冷却值">
+                               <el-input v-model="item.delay"></el-input>
+                           </el-form-item>
+                           <el-form-item label="消耗">
+                               <el-input v-model="item.cost"></el-input>
+                           </el-form-item>
                            <el-form-item label="图标">
                                <el-upload
                                     class="avatar-uploader"
-                                    :action="$http.defaults.baseURL+'/upload'"  
+                                    :action="uploadUrl"  
+                                    :headers="getAuthHeaders()"  
+                                    :show-file-list="false"
+                                    :on-success="res=>$set(item,'icon', res.url)">
+                                    <img v-if="item.icon" :src="item.icon" class="avatar">
+                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                    </el-upload>
+                                </el-form-item>
+                           <el-form-item label="描述">
+                               <el-input type="textarea" v-model="item.description"></el-input>
+                           </el-form-item>
+                           <el-form-item label="小提示">
+                               <el-input type="textarea" v-model="item.tips"></el-input>
+                           </el-form-item>
+                           <el-form-item >
+                               <el-button size="small" type="danger" @click="model.skills.splice(i,1)">删除</el-button>
+                           </el-form-item>
+                       </el-col>
+                   </el-row>
+               </el-tab-pane>
+                <el-tab-pane label="最佳搭档" name="partners">
+                   <el-button  type="text" 
+                   @click="model.skills.push({})">
+                       <i class="el-icon-plus"></i>
+                       添加搭档
+                    </el-button>
+                   <el-row type="flex" style="flex-wrap: wrap"> 
+                       <el-col :md="12" v-for="(item,i) in model.skills" :key="i">  <!--技能有多个，使用索引作为key-->
+                           <el-form-item label="名称">
+                               <el-input v-model="item.name"></el-input>
+                           </el-form-item>
+                           <el-form-item label="冷却值">
+                               <el-input v-model="item.delay"></el-input>
+                           </el-form-item>
+                           <el-form-item label="消耗">
+                               <el-input v-model="item.cost"></el-input>
+                           </el-form-item>
+                           <el-form-item label="图标">
+                               <el-upload
+                                    class="avatar-uploader"
+                                    :action="uploadUrl"  
                                     :headers="getAuthHeaders()"  
                                     :show-file-list="false"
                                     :on-success="res=>$set(item,'icon', res.url)">
@@ -135,10 +193,6 @@ export default {
         }
     },
     methods:{
-        afterUpload(res){
-            // this.$set(this.model,'icon',res.url)     已经在model中定义了avatar属性，不用此这种方法
-            this.model.avatar = res.url
-        },
         async save(){     //save方法
             let res
             if(this.id){

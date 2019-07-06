@@ -6,6 +6,22 @@
             <div class="text-grey fs-xs">2019-06-19</div>
         </div>
         <div v-html="model.body" class="px-3 body fs-lg"></div>
+        <div class="px-3 border-top py-2">
+          <div class="d-flex ai-center">
+            <i class="iconfont icon-menu"></i>
+            <strong class="text-blue fs-lg ml-l px-2">相关资讯</strong>
+          </div>
+          <div class="py-2">
+            <router-link 
+            class="py-1"
+            tag="div" 
+            v-for="item in model.related" 
+            :key="item._id"
+            :to="`/articles/${item._id}`">
+              {{item.title}}
+            </router-link>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -18,6 +34,12 @@ export default {
         return {
             model: null
         };
+    },
+    watch:{
+      id:'fetch',
+      // id(){
+      //   this.fetch()
+      // }
     },
     methods: {
         async fetch() {

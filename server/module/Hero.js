@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const schema = new mongoose.Schema({
     name:{type: String},
     avatar:{type: String},
+    banner:{type: String},
     title:{type:String},
     categories:[{type:mongoose.SchemaTypes.ObjectId,ref:'Category'}],   //分类设置为数组可以关联多个分类
     scores:{
@@ -13,6 +14,8 @@ const schema = new mongoose.Schema({
     },
     skills:[{
         icon:{type:String},
+        delay:{type:String},
+        cost:{type:String},
         name:{type:String},
         description:{type:String},
         tips:{type:String}
