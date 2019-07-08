@@ -82,6 +82,7 @@
                     </el-form-item>
                     
                </el-tab-pane>
+               <!-- 技能添加 -->
                <el-tab-pane label="技能" name="skills">
                    <el-button  type="text" 
                    @click="model.skills.push({})">
@@ -122,42 +123,30 @@
                        </el-col>
                    </el-row>
                </el-tab-pane>
+               <!-- 搭档，克制英雄 -->
                 <el-tab-pane label="最佳搭档" name="partners">
                    <el-button  type="text" 
-                   @click="model.skills.push({})">
+                   @click="model.partners.push({})">
                        <i class="el-icon-plus"></i>
-                       添加搭档
+                       添加英雄
                     </el-button>
                    <el-row type="flex" style="flex-wrap: wrap"> 
-                       <el-col :md="12" v-for="(item,i) in model.skills" :key="i">  <!--技能有多个，使用索引作为key-->
-                           <el-form-item label="名称">
-                               <el-input v-model="item.name"></el-input>
+                       <el-col :md="12" v-for="(item,i) in model.partners" :key="i">  <!--技能有多个，使用索引作为key-->
+                           <el-form-item label="英雄">
+                               <el-select filterable v-model="item.hero">
+                                   <el-option 
+                                   v-for="hero in heroes"
+                                   :key="heros._id"
+                                   :value="hero._id"
+                                   :label="hero.name"
+                                   ></el-option>
+                               </el-select>
                            </el-form-item>
-                           <el-form-item label="冷却值">
-                               <el-input v-model="item.delay"></el-input>
-                           </el-form-item>
-                           <el-form-item label="消耗">
-                               <el-input v-model="item.cost"></el-input>
-                           </el-form-item>
-                           <el-form-item label="图标">
-                               <el-upload
-                                    class="avatar-uploader"
-                                    :action="uploadUrl"  
-                                    :headers="getAuthHeaders()"  
-                                    :show-file-list="false"
-                                    :on-success="res=>$set(item,'icon', res.url)">
-                                    <img v-if="item.icon" :src="item.icon" class="avatar">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                    </el-upload>
-                                </el-form-item>
                            <el-form-item label="描述">
                                <el-input type="textarea" v-model="item.description"></el-input>
                            </el-form-item>
-                           <el-form-item label="小提示">
-                               <el-input type="textarea" v-model="item.tips"></el-input>
-                           </el-form-item>
                            <el-form-item >
-                               <el-button size="small" type="danger" @click="model.skills.splice(i,1)">删除</el-button>
+                               <el-button size="small" type="danger" @click="model.partners.splice(i,1)">删除</el-button>
                            </el-form-item>
                        </el-col>
                    </el-row>
@@ -183,9 +172,12 @@ export default {
         return{
             categories:[],
             items:[],
+            heros:[],
             model:{
                 name:'',
                 avatar:'',
+                skills:[],
+                partners:[],
                 scores:{
                     difficult: 0,
                 }
@@ -210,19 +202,24 @@ export default {
             const res = await this.$http.get(`rest/heroes/${this.id}`)
             this.model= Object.assign({}, this.model,res.data)
         },
-        async fetchCategories(){  //fetch方法
+        async fetchCategories(){  //英雄分类
             const res = await this.$http.get(`rest/categories`)
             this.categories=res.data
         },
-        async fetchItems(){  //fetch方法
+        async fetchItems(){  //物品选中
             const res = await this.$http.get(`rest/items`)
             this.items=res.data
+        },
+         async fetchHeroes(){  //英雄搭档
+            const res = await this.$http.get(`rest/heroes`)
+            this.heroes=res.data
         },
     },
     created(){
         this.fetchItems()
         this.fetchCategories()
-        this.id && this.fetch()       //当存在id时执行fetch（）方法
+        this.id && this.fetch()
+        this.fetchHeroes()
     }
 }
 </script>

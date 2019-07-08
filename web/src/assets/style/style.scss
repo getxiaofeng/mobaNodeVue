@@ -145,6 +145,19 @@ p{
     border-radius: 0.1538rem;
     font-size: map-get($font-sizes, 'sm')*$base-font-size;
     padding: 0.2rem 0.6rem;
+    &.btn-lg{
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        i{
+            color: map-get($map: $colors, $key: 'primary');
+            margin-right: .5rem;
+        }
+        background: map-get($colors, 'white-1' );
+        border: 1px solid map-get($colors, 'white-2');
+        padding: .8rem 1rem;
+        font-size: 1rem;
+    }
 }
 
 // nav
