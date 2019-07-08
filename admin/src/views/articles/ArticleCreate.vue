@@ -37,7 +37,7 @@ export default {
     components:{
         VueEditor
     },
-    methods:{
+    methods:{   //富文本编辑器
         async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
         // An example of using FormData
         // NOTE: Your key could be different such as:
